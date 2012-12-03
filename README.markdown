@@ -21,6 +21,10 @@ You should then be able to proceed as you would usually, you may want to familia
 
     $ cap -T
 
+## Git Ignore
+
+The deployment script expects that sites/default/files and sites/default/settings.php will not be checked into git. Add them to .gitignore in your project.
+
 ## Roadmap
 
 - Split out the tasks into indivual files/modules
