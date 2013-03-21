@@ -22,7 +22,6 @@ Capistrano::Configuration.instance(:must_exist).load do
   set :shared_children, ['files', 'private']
     
   after "deploy:update_code", "drupal:symlink_shared", "drush:site_offline", "drush:updatedb", "drush:cache_clear", "drush:site_online"
-  after "deploy", "git:push_deploy_tag"
   
   namespace :deploy do
     desc <<-DESC
