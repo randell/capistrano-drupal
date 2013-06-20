@@ -2,7 +2,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   require 'capistrano/recipes/deploy/scm'
   require 'capistrano/recipes/deploy/strategy'
-  
+
   # =========================================================================
   # These variables may be set in the client capfile if their default values
   # are not sufficient.
@@ -12,17 +12,17 @@ Capistrano::Configuration.instance(:must_exist).load do
   set :deploy_via, :remote_cache
   _cset :branch, "master"
   set :git_enable_submodules, true
-  
+
   set :drush_cmd, "drush"
-  
+
   set :runner_group, "www-data"
   set :group_writable, false
-  
+
   set(:deploy_to) { "/var/www/#{application}" }
   set :shared_children, ['files', 'private']
-    
+
   after "deploy:update_code", "drupal:symlink_shared", "drush:site_offline", "drush:updatedb", "drush:cache_clear", "drush:site_online"
-  
+
   namespace :deploy do
     desc <<-DESC
       Prepares one or more servers for deployment. Before you can use any \
@@ -44,7 +44,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       run "#{try_sudo} chmod 2775 #{sub_dirs.join(' ')}"
     end
   end
-  
+
   namespace :drupal do
     desc "Symlink settings and files to shared directory. This allows the settings.php and \
       and sites/default/files directory to be correctly linked to the shared directory on a new deployment."
@@ -54,7 +54,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
   end
-  
+
   namespace :git do
 
     desc "Place release tag into Git and push it to origin server."
@@ -70,7 +70,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
    end
-  
+
   namespace :drush do
 
     desc "Backup the database"
@@ -87,7 +87,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     task :cache_clear, :on_error => :continue do
       run "#{drush_cmd} -r #{app_path} cc all"
     end
-    
+
     desc "Set the site offline"
     task :site_offline, :on_error => :continue do
       run "#{drush_cmd} -r #{app_path} vset site_offline 1 -y"
@@ -101,5 +101,5 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
   end
-  
+
 end
