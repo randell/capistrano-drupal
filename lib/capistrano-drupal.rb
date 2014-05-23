@@ -21,7 +21,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   set(:deploy_to) { "/var/www/#{application}" }
   set :shared_children, ['files', 'private']
 
-  after "deploy:update_code", "drupal:symlink_shared", "drush:site_offline", "drush:updatedb", "drush:cache_clear", "drush:site_online"
+  after "deploy:update_code", "drupal:symlink_shared", "drush:site_offline", "drush:updatedb", "drush:site_online", "drush:cache_clear"
 
   namespace :deploy do
     desc <<-DESC
@@ -87,6 +87,11 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Clear the drupal cache"
     task :cache_clear, :on_error => :continue do
       run "#{drush_cmd} -r #{app_path} cc all"
+    end
+
+    desc "Revert all features"
+    task :features_revert_all, :on_error => :continue do
+      run "#{drush_cmd} -r #{app_path} fr-all -y"
     end
 
     desc "Set the site offline"
