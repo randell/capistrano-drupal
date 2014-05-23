@@ -89,6 +89,11 @@ Capistrano::Configuration.instance(:must_exist).load do
       run "#{drush_cmd} -r #{app_path} cc all"
     end
 
+    desc "Revert all features"
+    task :features_revert_all, :on_error => :continue do
+      run "#{drush_cmd} -r #{app_path} fr-all -y"
+    end
+
     desc "Set the site offline"
     task :site_offline, :on_error => :continue do
       run "#{drush_cmd} -r #{app_path} vset site_offline 1 -y"
