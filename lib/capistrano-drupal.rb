@@ -53,7 +53,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     task :symlink_shared do
       ["files", "private", "settings.php"].each do |asset|
         if exists?(:asset)
-          run "rm -rf #{app_path}/#{asset}"
+          run "rm -rf #{app_path}/sites/default/#{asset}"
         end
         run "ln -nfs #{shared_path}/#{asset} #{app_path}/sites/default/#{asset}"
       end
